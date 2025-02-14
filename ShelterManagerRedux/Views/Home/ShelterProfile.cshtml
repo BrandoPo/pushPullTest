@@ -1,0 +1,121 @@
+﻿@model List<ShelterManagerRedux.Models.ShelterProfile>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shelter Profile</title>
+    <link rel="stylesheet" href="site.css">
+    <style>
+        /* for account info button */
+        .account-info-link {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 16px;
+            background-color: #387cb4;
+            color: #fff;
+            border-radius: 4px;
+        }
+
+        .account-info-link:hover {
+            background-color: #306494;
+        }
+
+        .profile-card {
+            display: none;
+            padding: 30px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 800px;
+            border: 3px solid #3498db;
+            border-radius: 20px;
+            background-color: #f1f2f6;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Center dropdown */
+        .dropdown {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        select {
+            font-size: 18px;
+            padding: 10px;
+            width: 300px;
+            border-radius: 5px;
+            border: 2px solid #3498db;
+            background-color: #fff;
+            color: #555;
+        }
+
+            select:focus {
+                outline: none;
+                border-color: #2980b9;
+            }
+    </style>
+</head>
+
+<body>
+    <div class="dropdown">
+        <h3>Please select which Shelter's Profile you would like to view:</h3>
+        @Html.DropDownList("ShelterDropdown", new List<SelectListItem>
+        {
+            new SelectListItem { Text = "City Rescue Mission", Value = "1" },
+            new SelectListItem { Text = "Trinity Rescue Mission", Value = "2" },
+            new SelectListItem { Text = "Emmanuel Homeless Shelter", Value = "3" },
+            new SelectListItem { Text = "Jacksonville New Life Inn", Value = "5" },
+            new SelectListItem { Text = "Sulzbacher", Value = "6" },
+        }, "Select Shelter", new { @onchange = "toggleProfile()" })
+    </div>
+
+    @foreach (ShelterProfile shelter in Model)
+    {
+        <div class="profile-card" id="profile-@shelter.ShelterID">
+            <h2>@shelter.Shelter_name</h2>
+            <div>
+                <h4>Contact: @shelter.Contact_name</h4>
+                <h4>Phone Number: (904) 154 - 7651</h4>
+                <h4>Email: @shelter.Email</h4>
+                <h4>Operating Hours: 9 AM - 10 PM EST</h4>
+                <div class="buttons">
+                    <a href="@shelter.Website_Link" target="_blank" class="btn">More Information</a>
+                </div>
+
+                @if (ViewBag.isAuthenticated && shelter.Shelter_name == "Trinity Rescue Mission")
+                {
+                    <div class="buttons">
+                        <a href="@Url.Action("EditShelterProfile", "Home")" class="btn">Edit Profile</a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    @* for account info button *@
+    @if (ViewBag.isAuthenticated)
+    {
+        <a asp-controller="Home" asp-action="AccountInformation" class="account-info-link">Account Info</a>
+    }
+
+    <script>function toggleProfile() {
+            var dropdown = document.getElementById("ShelterDropdown");
+            var selectedShelterID = dropdown.value;
+            var profileCards = document.querySelectorAll(".profile-card");
+
+            // Hide all profile cards
+            profileCards.forEach(function (card) {
+                card.style.display = "none";
+            });
+
+            // Show the selected profile card
+            var selectedProfileCard = document.getElementById("profile-" + selectedShelterID);
+            if (selectedProfileCard) {
+                selectedProfileCard.style.display = "block";
+            }
+        }</script>
+</body>
+
+</html>

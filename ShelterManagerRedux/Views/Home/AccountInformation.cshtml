@@ -1,0 +1,40 @@
+﻿@model ShelterManagerRedux.Models.Manager
+
+@{
+    ViewData["Title"] = "Account Information";
+}
+
+<h2>Account Information</h2>
+<style>
+    .account-info-link {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 8px 16px;
+        background-color: #387cb4;
+        color: #fff;
+        border-radius: 4px;
+    }
+
+    .account-info-link:hover {
+        background-color: #306494;
+    }</style>
+<div>
+
+    @if (ViewBag.isAuthenticated)
+    {
+        <a asp-controller="Home" asp-action="AccountInformation" class="account-info-link">Account Info</a>
+    }
+    <h2>Welcome, @Model.Firstname @Model.Lastname!</h2>
+
+    <p>First Name: @Model.Firstname</p>
+    <p>Last Name: @Model.Lastname</p>
+    <p>Username: @Model.Username</p>
+    <p>Email: @Model.Email</p>
+    <p>Phone Number: @Model.PhoneNumber</p>
+    <p>Assigned Shelter: @Model.AssignedShelter</p>
+    <a asp-action="ChangePassword">Change Password</a>
+    <br />
+    <a asp-controller="Home" asp-action="Logout">Logout</a>
+
+</div>

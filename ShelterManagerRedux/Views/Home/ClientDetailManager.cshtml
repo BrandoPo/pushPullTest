@@ -1,0 +1,119 @@
+﻿@model ShelterManagerRedux.Models.Client
+
+@{
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+@{
+    ViewData["Title"] = "Client Detail Manager";
+}
+<h1>@ViewData["Title"]</h1>
+
+@if (Model != null)
+{
+    @using (Html.BeginForm("ClientDetailManager", "Home", FormMethod.Post))
+    {
+        <table>
+            <tr>
+                <td>First Name</td>
+                <td>
+                    @Html.TextBoxFor(m => Model.F_Name, new { @class = "CommonField", MaxLength = 100 })
+                    @Html.ValidationMessageFor(m => @Model.F_Name)
+                </td>
+            </tr>
+            <tr>
+                <td>Middle Name</td>
+                <td>@Html.TextBoxFor(m => Model.M_Name, new { @class = "CommonField", MaxLength = 100 })</td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td>
+                    @Html.TextBoxFor(m => Model.L_Name, new { @class = "CommonField", MaxLength = 100 })
+                    @Html.ValidationMessageFor(m => @Model.L_Name)
+                </td>
+            </tr>
+            <tr>
+                <td>Birth Date</td>
+                <td>
+                    @Html.TextBoxFor(m => m.Date_Birth, "{0:MM/dd/yyyy}", new { @class = "CommonField", width = 70, MaxLength = 10 })
+                    &nbsp; <font>(MM/dd/yyyy)</font>
+                    @Html.ValidationMessageFor(m => @Model.Date_Birth)
+                </td>
+            </tr>
+            <tr>
+                <td>Shelter Location</td>
+                <td>@Html.DropDownListFor(x => Model.Shelter_Location_ID, new SelectList(ViewBag.ShelterLocations, "Shelter_Location_ID", "Shelter_Location_Description", ViewBag.ShelterLocations), new { @class = "xxx" })</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit" onclick="return ValidateForm();">SAVE</button>
+                    <br />
+                    @ViewBag.ErrorMessage
+                </td>
+            </tr>
+            <tr style="visibility: hidden;">
+                <td></td>
+                <td>@Html.TextBoxFor(m => Model.ClientID, new { @class = "CommonField", MaxLength = 100 })</td>
+            </tr>
+        </table>
+        <div style="visibility:hidden;">
+            @Html.TextBoxFor(m => Model.Active_Date)
+            @Html.TextBoxFor(m => Model.Inactive_Date)
+        </div>
+    }
+}
+else if (ViewBag.ErrorMessage.Length == 0)
+{
+    <script>
+        @* opener.location.reload(); *@
+            opener.location = '/ClientManager/';
+        self.close();
+    </script>
+}
+
+
+
+<script>
+    function ValidateForm() {
+        var F_Name = document.getElementById('F_Name').value;
+        if (F_Name == null || F_Name.length == 0) {
+            alert("First Name is Required!");
+            return false;
+        }
+
+        var L_Name = document.getElementById('L_Name').value;
+        if (L_Name == null || L_Name.length == 0) {
+            alert("Last Name is Required!");
+            return false;
+        }
+        if (!isDateValid(document.getElementById('Date_Birth').value))
+        {
+            alert("Birth Date is Required with valid format!");
+            return false;
+        }
+        return true;
+    }
+    function isDateValid(dateStr) 
+    {
+        //alert(dateStr);
+        return !isNaN(new Date(dateStr));
+    }
+
+    var DOBCheck = document.getElementById('Date_Birth').value;
+    if (DOBCheck == '01/01/0001') 
+    { 
+        document.getElementById('Date_Birth').value = '';
+    }
+
+    document.getElementById('F_Name').focus();
+
+</script>
+
+@* <script type="text/javascript">
+
+    $(function () {
+        $('#Date_Birth').datetimepicker({
+            format: 'MM/DD/YYYY'
+        });
+    });
+</script> *@

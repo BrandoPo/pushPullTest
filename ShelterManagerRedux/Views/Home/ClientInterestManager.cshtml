@@ -1,0 +1,125 @@
+﻿@model List<ShelterManagerRedux.Models.ShownInterest>
+
+<style>
+    td {
+        border: solid;
+    }
+    @*for account info button*@
+    .account-info-link {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 8px 16px;
+        background-color: #387cb4;
+        color: #fff;
+        border-radius: 4px;
+    }
+
+    .account-info-link:hover {
+        background-color: #306494;
+    }
+</style>
+
+@{
+    ViewData["Title"] = "Client Interest Manager";
+}
+<h1>@ViewData["Title"]</h1>
+@if (ViewBag.isAuthenticated)
+{
+    <a asp-controller="Home" asp-action="AccountInformation" class="account-info-link">Account Info</a>
+}
+<h3>Interested Clients</h3>
+<table align="left" border="1" style="border:1px solid black; background-color:white; font-size:18px; width:1100px; border-spacing: 30px;">
+
+
+    <tr style="border:solid; background-color:grey; color:black;">
+        <td align="center">
+            First Name
+        </td>
+@*         <td align="center">
+            Middle Name
+        </td> *@
+        <td align="center">
+            Last Name
+        </td>
+        <td align="center">
+            Location
+        </td>
+@*         <td align="center">
+            Active Date
+        </td>
+        <td align="center">
+            Inactive Date
+        </td> *@
+        <td align="center">
+            Actions
+        </td>
+    </tr>
+
+
+    @foreach (ShownInterest c in Model)
+    {
+        <tr style="border:solid;">
+            <td align="center">
+                @c.Fname
+            </td>
+@*             <td align="center">
+                @c.M_Name
+            </td> *@
+            <td align="center">
+                @c.Lname
+            </td>
+@*             <td align="center">
+                @c.Date_Birth.ToString("MM/dd/yyyy")
+            </td> *@
+            <td>@Html.DropDownListFor(x => c.ShelterID, new SelectList(ViewBag.ShelterLocations, "Shelter_Location_ID", "Shelter_Location_Description", ViewBag.ShelterLocations), new { @disabled = "disabled" })</td>
+            @* <td align="center">
+                @c.Active_Date.ToString("MM/dd/yyyy")
+            </td>
+            <td align="center">
+                @if(c.Inactive_Date.HasValue)
+                { 
+                    <font>@c.Inactive_Date.Value.ToString("MM/dd/yyyy")</font>
+                }
+            </td> *@
+            <td align="center">
+                <button type="button" onclick="OpenClientDetailWindow(@c.QueueID)">Approve</button>
+                <button type="button" onclick="DenyClient(@c.QueueID)">Deny</button>
+            </td>
+        </tr>
+    }
+</table>
+
+
+<script>
+
+
+
+
+    function OpenClientDetailWindow(queueID) 
+    {
+
+        //alert("Opening: " + Client_ID);
+        window.open("/ClientDetailManager/approve/" + queueID, "mywindow", "menubar=1,resizable=1,width=600,height=500");
+    }
+
+    function DenyClient(queueID) 
+    {
+        if (confirm("Press OK to continue with denial.")) {
+            alert("Denying: " + queueID);
+            $.ajax({
+                type: "POST",
+                url: "/DenyClient",
+                data: { queueIDVal : queueID },
+                error: function (xhr, status, error) {
+                    alert('Interested Client Denied');
+                },
+                success: function (result) {
+                    location.reload();
+                }
+            });
+        }
+    }
+
+</script>
+

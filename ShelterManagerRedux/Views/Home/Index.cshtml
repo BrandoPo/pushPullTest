@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using Microsoft.AspNetCore.Http
+
+
+<style>
+    table 
+    {
+        border-collapse: separate;
+        border-spacing: 5px;
+        margin: 0 auto;
+    }
+    td 
+    {
+        padding: 8px;
+        text-align: center;
+    }
+
+    .account-info-link {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 8px 16px;
+        background-color: #387cb4;
+        color: #fff;
+        border-radius: 4px;
+    }
+
+    .account-info-link:hover {
+        background-color: #306494;
+    }
+</style>
+
+<div class="text-center">
+
+    <h1 class="display-4">Welcome to The Shelter Manager</h1>
+    @*  <h2>Joshua, Brandon, Kelli, Jordan</h2> *@
+    <table>
+        <tr>
+            @if ((bool)ViewData["ShowElements"])
+            {
+                <td><a asp-controller="Home" asp-action="Logout">Logout</a></td>
+            }
+            else
+            {
+                <td><a asp-action="Create">Create Account</a></td>
+                <td><a asp-action="LoginView">Login</a></td>
+            }
+            <td><a asp-action="ClientView">Client View</a></td>
+
+        </tr>
+    </table>
+
+</div>
+@if ((bool)ViewData["ShowElements"])
+{
+    <a asp-controller="Home" asp-action="AccountInformation" class="account-info-link">Account Info</a>
+}
+<!-- script for messages -->
+<script>
+    // use local storage
+    var loginTemp = parseInt(localStorage.getItem('loginTemp')) || 0;
+    var logoutTemp = parseInt(localStorage.getItem('logoutTemp')) || 0;
+    var createTemp = parseInt(localStorage.getItem('createTemp')) || 0;
+
+    var loginMessage = '@TempData["LoginMessage"]';
+
+    if (loginMessage && loginTemp === 0) {
+        alert(loginMessage);
+        loginTemp++;
+        if (logoutTemp === 1) {
+            logoutTemp--;
+        }
+    }
+
+    var logoutMessage = '@TempData["LogoutMessage"]';
+
+    if (logoutMessage && logoutTemp === 0) {
+        alert(logoutMessage);
+        logoutTemp++;
+        loginTemp--;
+    }
+
+    var accountCreationMessage = '@TempData["AccountCreationMessage"]';
+
+    if (accountCreationMessage && createTemp === 0) {
+        alert(accountCreationMessage);
+    }
+
+    // save updated values
+    localStorage.setItem('loginTemp', loginTemp);
+    localStorage.setItem('logoutTemp', logoutTemp);
+    localStorage.setItem('createTemp', createTemp);
+
+    //clear function
+    function clearLocalStorage() {
+        localStorage.clear();
+    }
+
+</script>

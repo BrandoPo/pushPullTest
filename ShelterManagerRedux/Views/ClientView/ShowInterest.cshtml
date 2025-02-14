@@ -1,0 +1,25 @@
+﻿@model List<ShelterManagerRedux.Models.ShelterLocation>
+@{
+    ViewData["Title"] = "ShowInterest";
+}
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>ShelterID</th>
+        <th>Shelters</th>
+        <th>Availability</th>
+        <th>Show Interest</th>
+        <th>Info</th>
+    </tr>
+    @foreach (ShelterLocation a in Model)
+    {
+        
+            <tr>
+                <td>@a.Shelter_Location_ID</td>
+                <td>@a.Shelter_Location_Description</td>
+                <td>@a.Shelter_Location_Available_Room/@a.Shelter_Location_Total_Room</td>
+                <td>blank space</td>
+                <td><a href="@a.Shelter_Location_Description">shelter info</a></td>
+            </tr>
+        
+    }
+</table>

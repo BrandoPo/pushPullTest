@@ -1,0 +1,179 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.main {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-position: center;
+    background-size: cover;
+}
+
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px;
+    width: 100%;
+    border-radius: 15px;
+    padding: 10px;
+    border: 1px solid #ffffff40;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+}
+
+.logo {
+    width: 300px;
+    height: 150px;
+}
+
+.image {
+    position: relative;
+    height: 150px;
+    width: 150px;
+}
+
+.data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+}
+
+    .data h2 {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+span {
+    font-size: 15px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+}
+
+    .row .info {
+        text-align: center;
+        padding: 0 20px;
+    }
+
+.buttons {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+}
+
+    .buttons .btn {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 20px;
+        padding: 8px 25px;
+        border-radius: 25px;
+        font-size: 18px;
+        white-space: nowrap;
+        background: blue;
+    }
+
+.saveButton {
+    display: flex;
+    margin-top: 30px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    margin: 0 20px;
+    padding: 8px 25px;
+    border-radius: 25px;
+    font-size: 48px;
+    white-space: nowrap;
+    background: lightBlue;
+}
+
+body {
+    margin-top: 20px;
+}
+
+.photo {
+    width: 150px;
+    height: 150px;
+}
+
+
+/*FOR CLIENT VIEW*/
+.container {
+    max-width: 900px; /* Adjust as needed */ /*Joshua updated this from 800 to 900*/
+    margin: 0 auto; /* Center the container */
+}
+
+h2 {
+    text-align: center;
+}
+
+.accordion-headers {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f4f4f4;
+    padding: 10px;
+}
+
+    .accordion-headers div {
+        flex: 0 0 30%; /* Adjust the width as needed */
+    }
+
+/* Hide the radio buttons */
+input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+/* Style the labels to mimic the appearance of clickable buttons */
+.accordion-title {
+    display: flex;
+    background-color: #f4f4f4;
+    padding: 10px; /* Increased padding */
+    cursor: pointer;
+}
+
+    /* Set fixed width for each title */
+    .accordion-title span {
+        flex: 0 0 275px; /* Adjust the width as needed */
+    }
+
+/* Style the labels when checked */
+input[type="radio"]:checked + .accordion-title {
+    background-color: #ccc;
+}
+
+/* Additional styles for the active state */
+.accordion-item .accordion-content {
+    display: none;
+}
+
+.accordion-item.active .accordion-content {
+    display: block;
+}
+
+.accordion {
+    padding: 10px;
+}

@@ -1,0 +1,235 @@
+﻿@model List<ShelterManagerRedux.Models.Client> 
+
+
+
+<style>
+    td {
+        border: solid;
+    }
+    @*for account info button*@
+    .account-info-link {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 8px 16px;
+        background-color: #387cb4;
+        color: #fff;
+        border-radius: 4px;
+    }
+
+    .account-info-link:hover {
+        background-color: #306494;
+    }
+</style>
+
+@{
+    ViewData["Title"] = "Client Manager";
+}
+<h1>@ViewData["Title"]</h1>
+@if (ViewBag.isAuthenticated)
+{
+    <a asp-controller="Home" asp-action="AccountInformation" class="account-info-link">Account Info</a>
+}
+<button type="button" onclick="OpenClientDetailWindow(0)">Create New Client</button>
+<br />
+<br />
+<table style="border:none;">
+    <tr>
+        <td>
+            <select name="" id="SearchFilter" onchange="SearchFilterEventHandler(this)">
+                <option value="">Select Filter</option>
+                <option value="FirstName">First Name</option>
+                <option value="LastName">Last Name</option>
+                <option value="ShelterLocation">Shelter Location</option>
+            </select>
+        </td>
+        <td id="tdNameFilterInput" style="display:none;">
+            <input type="text" id="FilterInput" name="FilterInput">
+        </td>
+        <td id="tdShelterFilterInput" style="display:none;">
+            @Html.DropDownList("Shelter_location_ID", (IEnumerable<SelectListItem>)ViewBag.ShelterLocationsFilters)
+        </td>
+         <td id="tdShelterActiveFilterInput">
+            <select name="" id="ActiveFilter">
+                <option value="All">--ALL--</option>
+                <option value="Active">Active Only</option>
+                <option value="Inactive">Inactive Only</option>
+
+            </select>
+        </td>
+        <td style="border:none;">
+            &nbsp;
+            <button type="button" onclick="SearchByFilter()">Search</button>
+            &nbsp;
+            <button type="button" onclick="ClearFilter()">Clear</button>
+        </td>
+        @* <td style="text-align:right; padding-right:10px;">@Html.DropDownListFor(x => c.Shelter_Location_ID, new SelectList(ViewBag.ShelterLocations, "Shelter_Location_ID", "Shelter_Location_Description", ViewBag.ShelterLocations), new { @disabled = "disabled" })</td> *@
+    </tr>
+</table>
+
+
+<button type="button" onclick="OpenClientCountPopup()">Open Shelter Availability Popup</button>
+
+
+
+<h3>Existing Clients</h3>
+<table align="left" border="1" style="border:1px solid black; background-color:white; font-size:18px; width:1100px; border-spacing: 30px;">
+
+
+    <tr style="border:solid; background-color:grey; color:black;">
+        <td align="center">
+            First Name
+        </td>
+        <td align="center">
+            Middle Name
+        </td>
+        <td align="center">
+            Last Name
+        </td>
+        <td align="center">
+            Birthdate
+        </td>
+        <td align="center">
+            Location
+        </td>
+        <td align="center">
+            Active Date
+        </td>
+        <td align="center">
+            Inactive Date
+        </td>
+        <td align="center">
+            Actions
+        </td>
+    </tr>
+
+
+    @foreach (Client c in Model)
+    {
+        <tr style="border:solid;">
+            <td align="center">
+                @c.F_Name
+            </td>
+            <td align="center">
+                @c.M_Name
+            </td>
+            <td align="center">
+                @c.L_Name
+            </td>
+            <td align="center">
+                @c.Date_Birth.ToString("MM/dd/yyyy")
+            </td>
+            <td>@Html.DropDownListFor(x => c.Shelter_Location_ID, new SelectList(ViewBag.ShelterLocations, "Shelter_Location_ID", "Shelter_Location_Description", ViewBag.ShelterLocations), new { @disabled = "disabled" })</td>
+            <td align="center">
+                @c.Active_Date.ToString("MM/dd/yyyy")
+            </td>
+            <td align="center">
+                @if(c.Inactive_Date.HasValue)
+                { 
+                    <font>@c.Inactive_Date.Value.ToString("MM/dd/yyyy")</font>
+                }
+            </td>
+            <td align="center">
+                @if (c.Inactive_Date.HasValue == false)
+                {
+                    <button type="button" onclick="OpenClientDetailWindow(@c.ClientID)">Edit</button>
+                    <button type="button" onclick="DeleteClient(@c.ClientID)">Deactivate</button>
+                }
+            </td>
+        </tr>
+    }
+</table>
+
+
+<script>
+
+    function SearchFilterEventHandler(dropdownlistobject) 
+    {
+
+        var input1 = document.getElementById('tdNameFilterInput');
+        input1.style.display = 'none';
+        var input2 = document.getElementById('tdShelterFilterInput');
+        input2.style.display = 'none';
+        //var input3 = document.getElementById('tdShelterActiveFilterInput');
+        //input3.style.display = 'none';
+
+        var selectedValue = dropdownlistobject.value;
+        //alert(selectedValue);
+        if (selectedValue == "FirstName" || selectedValue == "LastName") {
+            input1.style.display = "block";
+        }
+        else if (selectedValue == "ShelterLocation") 
+        { 
+            input2.style.display = "block";
+        }
+    }
+
+
+
+    function OpenClientDetailWindow(Client_ID) 
+    {
+        window.open("/ClientDetailManager/edit/" + Client_ID, "myclientdetailwindow", "menubar=1,resizable=1,width=600,height=500");
+    }
+
+    function OpenClientCountPopup() 
+    {
+        window.open("/ClientCountPopup", "mysheltercountpopup", "menubar=1,resizable=1,width=800,height=300");
+    }
+
+
+    function SearchByFilter() 
+    {
+        var FilterType = document.getElementById('SearchFilter').value;
+        // alert(FilterType);
+
+        var FilterInput = "";
+        if (FilterType == "FirstName" || FilterType == "LastName") 
+        {
+            FilterInput = document.getElementById('FilterInput').value;
+            // alert(FilterInput);
+        }
+        else if (FilterType == "ShelterLocation") 
+        {
+            FilterInput = document.getElementById('Shelter_location_ID').value;
+            // alert(FilterInput);
+        }
+        var ActiveFilterType = document.getElementById('ActiveFilter').value;
+            //alert(ActiveFilterType);
+        if (FilterInput == "") 
+        {
+           //alert('1');
+            window.location = ("/ClientManager/" + ActiveFilterType);
+        }
+        else 
+        {
+            //alert('3');
+            window.location = ("/ClientManager/" + FilterType + "/" + FilterInput + "/" + ActiveFilterType);
+        }
+
+    }
+
+    function ClearFilter() { 
+        window.location = ("/ClientManager");
+    }
+
+
+    function DeleteClient(Client_ID) 
+    {
+        if (confirm("Press OK to continue with deletion.")) {
+            //alert("Deleting: " + Client_ID);
+            $.ajax({
+                type: "POST",
+                url: "/DeleteClient",
+                data: { clientIDVal : Client_ID },
+                error: function (xhr, status, error) {
+                    alert('Client Deleted');
+                },
+                success: function (result) {
+                    location.reload();
+                }
+            });
+        }
+    }
+
+</script>
+

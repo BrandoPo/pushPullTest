@@ -1,0 +1,43 @@
+﻿@model ShelterManagerRedux.Models.ShelterProfile
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="site.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Profile</h1>
+        <form method="post" action="@Url.Action("SaveChanges", "Home", new { id = Model.ShelterID })">
+            <div class="form-group">
+                <label for="shelterName">Shelter Name</label>
+                <input type="text" class="form-control" id="shelterName" name="Shelter_name" value="@Model.Shelter_name">
+            </div>
+            <div class="form-group">
+                <label for="contactName">Contact Name</label>
+                <input type="text" class="form-control" id="contactName" name="Contact_name" value="@Model.Contact_name">
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" class="form-control" id="phoneNumber" name="Phone_number" value="(904) 154 - 7651">
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" class="form-control" id="email" name="Email" value="@Model.Email">
+            </div>
+            <div class="form-group">
+                <label for="operationHours">Operating Hours</label>
+                <input type="text" class="form-control" id="operationHours" name="Operation_hours" value="9 AM - 10 PM EST">
+            </div>
+            <div class="form-group">
+                <label for="Website_Link">Website_Link</label>
+                <input type="text" class="form-control" id="Website_Link" name="Website_Link" value="@Model.Website_Link">
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+</body>
+</html>
