@@ -20,8 +20,4 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore" Version="6.0.16" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="pushTest\" />
-  </ItemGroup>
-
 </Project>
