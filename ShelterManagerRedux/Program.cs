@@ -6,7 +6,7 @@ using Azure.Identity;var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration["Connnectionstrings:MyConnection"];
 //////////////
 /*
-// Add Azure App Configuration to the container.
+/// Add Azure App Configuration to the container.
 var azAppConfigConnection = builder.Configuration["AppConfig"];
 if (!string.IsNullOrEmpty(azAppConfigConnection))
 {
